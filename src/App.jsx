@@ -33,7 +33,7 @@ const TransactionType = ({ options, setType }) => {
 
 const TransactionBox = ({ value, onChange, type, setType }) => {
   return (
-    <div>
+    <div className='transaction-box'>
       <TransactionType 
       type={type}
       setType={setType}
@@ -63,27 +63,31 @@ const AddTransaction = ({ title, setTitle, note, setNote, amount, setAmount, onC
 
   return (
     <div>
-       <Title text='Add Transaction' />
-        <Textbox placeholder='Title' value={title} onChange={(e) => setTitle(e.target.value)}/>
-        <Textbox placeholder='Notes' value={note} onChange={(e) => setNote(e.target.value)}/>
-        <TransactionBox value={amount} onChange={(e) => setAmount(e.target.value)} type={type} setType={setType}/>
-        <Categories text='Select Category:' value={category} 
-        onChange={(e) => setCategory(e.target.value)}
-        options={[
-          {value: 'dining', text: 'Dining'},
-          {value: 'fd', text: 'Food & Drink'},
-          {value: 'groceries', text: 'Groceries'},
-          {value: 'shopping', text: 'Shopping'},
-          {value: 'transit', text: 'Transit'},
-          {value: 'entertainment', text: 'Entertainment'},
-          {value: 'bills', text: 'Bills'},
-          {value: 'gifts', text: 'Gifts'},
-          {value: 'beauty', text: 'Beauty'},
-          {value: 'work', text: 'Work'},
-          {value: 'travel', text: 'Travel'},
-          {value: 'income', text: 'Income'}
-        ]}  />
-        <Button onClick={onClick} text='+'/>
+      <Title text='Add Transaction' />
+      <div className='add-transaction-container'>
+        <div className='add-transaction'>
+          <Textbox placeholder='Title' value={title} onChange={(e) => setTitle(e.target.value)}/>
+          <Textbox placeholder='Notes' value={note} onChange={(e) => setNote(e.target.value)}/>
+          <TransactionBox value={amount} onChange={(e) => setAmount(e.target.value)} type={type} setType={setType}/>
+          <Categories text='Select Category:' value={category} 
+          onChange={(e) => setCategory(e.target.value)}
+          options={[
+            {value: 'dining', text: 'Dining'},
+            {value: 'food', text: 'Food & Drink'},
+            {value: 'groceries', text: 'Groceries'},
+            {value: 'shopping', text: 'Shopping'},
+            {value: 'transit', text: 'Transit'},
+            {value: 'entertainment', text: 'Entertainment'},
+            {value: 'bills', text: 'Bills'},
+            {value: 'gifts', text: 'Gifts'},
+            {value: 'beauty', text: 'Beauty'},
+            {value: 'work', text: 'Work'},
+            {value: 'travel', text: 'Travel'},
+            {value: 'income', text: 'Income'}
+          ]}  />
+          <Button onClick={onClick} text='+'/>
+        </div>
+      </div>
     </div>
   )
 }
@@ -96,8 +100,8 @@ const CurrentRecord = ({ records, income, expense, savings }) => {
     <div className='record-container'>
       {records.map((record, index)=> 
       <div key={index} className='record-row'>
-        <p className='record-items'>{list[index]}</p>
-        <p className='record-items'>{record}</p>
+        <p className='record-item-one'>₱{list[index]}</p>
+        <p className='record-item-two'>{record}</p>
       </div>
       )}
     </div>
@@ -110,20 +114,30 @@ const TransactionList = ({ transactions }) => {
       {transactions.length > 0 && <Title text='Transactions'/>}
       <table>
         {transactions.length > 0 &&
-        <tr>
-          <th>Transaction Name</th>
-          <th>Amount</th>
-          <th>Note</th>
-        </tr>}
+        <thead>
+          <tr>
+            <th>Transaction Name</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Note</th>
+          </tr>
+        </thead>}
+
         <tbody>
         {transactions.map(transaction => (
         <tr key={transaction.id}>
-          <td>{transaction.title}</td>
-          <td>₱{transaction.amount}</td>
-          <td>{transaction.note}</td>
+          <td className='list-row'>
+            <div className='list-items'>
+              <p className='item-one'>{transaction.title}</p>
+              <p className='item-two'>{transaction.category}</p>
+            </div>    
+          </td>
+          <td className='list-row'>{transaction.date}</td>
+          <td className='list-row'> ₱{transaction.amount}</td>
+          <td className='list-row'>{transaction.note}</td>
         </tr>
           ))}
-          </tbody>
+        </tbody>
       </table>
     </div>
   )
@@ -139,6 +153,13 @@ const App = () => {
   const [expense, setExpense] = useState(0)
   const [savings, setSavings] = useState(0)
   const [type, setType] = useState('income')
+
+  const today = new Date()
+  const month = today.getMonth()
+  const year = today.getFullYear()
+  const date = today.getDate()
+
+  const setDate = `${year}-${month}-${date}`
  
   const records = ['Total Income', 'Total Expense', 'Total Savings']
 
@@ -156,7 +177,7 @@ const App = () => {
     }
 
     const newTransaction = {
-      title, note, amount: updatedAmount, category, type, id: nextId++
+      title, note, amount: updatedAmount, date: setDate, category, type, id: nextId++
     }
     setTransactions([...transactions, newTransaction])
 

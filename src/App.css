@@ -1,5 +1,13 @@
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 50px 100px 50px 100px;
+}
+
 .record-container {
     display: flex;
+    width: 800px;
+    height: 200px;
+    justify-content: center;
 }
 
 .record-row {
@@ -7,24 +15,96 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: end;
-    padding: 20px 20px 5px 5px;
-    width: 100px;
-    height: 70px;
-    margin: 5px;
-    border-radius: 5px;
-    border: 1px solid black;
+    padding: 20px 20px 12px 12px;
+    width: 150px;
+    height: 120px;
+    margin: 15px;
+    border-radius: 20px;
+    border: 0.5px solid #D4D4D4;
 } 
 
-.record-items {
+.record-item-one {
     padding: 0;
     margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    color: #222222;
 }
 
+.record-item-two {
+    padding: 5px 0px 0px 0px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    color: #494848;
+}
+
+
 .list-container {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    justify-content: center;
+}
+
+.list-items {
     display: flex;
     flex-direction: column;
 }
 
+.item-one, .item-two {
+    margin: 0;
+    padding: 0;
+}
+
+.item-one {
+    font-weight: 500;
+}
+
+.item-two {
+    color: #636363;
+    font-weight: 200;
+}
+
 td, th {
     text-align: left;
+}
+
+h1 {
+    color: #222222;
+}
+
+.add-transaction {
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: 200px;
+    gap: 5px;
+    border-radius: 10px;
+}
+
+.add-transaction-container {
+    display: flex;
+    justify-content: center;
+    width: 800px;
+    height: 200px;
+}
+
+.transaction-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.list-row {
+    border: 0.5px solid #D4D4D4;
+    border-left: none;
+    border-right: none;
+    width: 500px;
+}
+
+table {
+    border-collapse: collapse;
 }
