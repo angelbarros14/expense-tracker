@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './App.css'
 
 let nextId = 0
 
@@ -70,6 +71,7 @@ const AddTransaction = ({ title, setTitle, note, setNote, amount, setAmount, onC
         onChange={(e) => setCategory(e.target.value)}
         options={[
           {value: 'dining', text: 'Dining'},
+          {value: 'fd', text: 'Food & Drink'},
           {value: 'groceries', text: 'Groceries'},
           {value: 'shopping', text: 'Shopping'},
           {value: 'transit', text: 'Transit'},
@@ -91,11 +93,11 @@ const CurrentRecord = ({ records, income, expense, savings }) => {
 
 
   return (
-    <div>
+    <div className='record-container'>
       {records.map((record, index)=> 
-      <div key={index}>
-        <div>{list[index]}</div>
-        <div>{record}</div>
+      <div key={index} className='record-row'>
+        <p className='record-items'>{list[index]}</p>
+        <p className='record-items'>{record}</p>
       </div>
       )}
     </div>
@@ -104,25 +106,25 @@ const CurrentRecord = ({ records, income, expense, savings }) => {
 
 const TransactionList = ({ transactions }) => {
   return (
-    <div>
+    <div className='list-container'>
       {transactions.length > 0 && <Title text='Transactions'/>}
-      <ul>
-        {/* fix container on each properties */}
-        {/* add conditional. show/hide title */}
-        {transactions.map(transaction => 
-        <li key={transaction.id}>
-          <div>
-            <div>{transaction.title}</div><div>{transaction.category}</div>
-          </div>
-          <div>
-            <div>{transaction.note}</div>
-          </div>
-          <div>
-            <div>{transaction.amount}</div>
-          </div>
-        </li>
-          )}
-      </ul>
+      <table>
+        {transactions.length > 0 &&
+        <tr>
+          <th>Transaction Name</th>
+          <th>Amount</th>
+          <th>Note</th>
+        </tr>}
+        <tbody>
+        {transactions.map(transaction => (
+        <tr key={transaction.id}>
+          <td>{transaction.title}</td>
+          <td>₱{transaction.amount}</td>
+          <td>{transaction.note}</td>
+        </tr>
+          ))}
+          </tbody>
+      </table>
     </div>
   )
 }
@@ -143,6 +145,16 @@ const App = () => {
   const addButton = () => {
     const updatedAmount = parseFloat(amount)
 
+    if (title === '') {
+      alert('title cannot be left blank')
+      return
+    }
+
+    if (amount === 0 || isNaN(updatedAmount)) {
+      alert('enter valid amount greater than 0')
+      return
+    }
+
     const newTransaction = {
       title, note, amount: updatedAmount, category, type, id: nextId++
     }
@@ -151,11 +163,13 @@ const App = () => {
     if (type === 'income') {
       setIncome(income => {
         const updatedIncome = income + updatedAmount
+        setSavings(updatedIncome - expense)
         return updatedIncome
       })
     } else {
       setExpense(expense => {
         const updatedExpense = expense + updatedAmount
+        setSavings(income - updatedExpense)
         return updatedExpense
       })
     }
